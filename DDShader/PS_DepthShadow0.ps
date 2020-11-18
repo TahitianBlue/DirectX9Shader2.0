@@ -1,0 +1,25 @@
+
+// depth shadow pixel shader pass 0
+
+//	D3DFMT_G16R16 shadow texture
+//		Red			diffuse.R ‰e”Z“x
+//		Green		depth ( z / w )
+
+ps_2_0
+
+dcl				v0				// v0 diffuse
+dcl				t0				// t0 ( ŒõŒ¹‹óŠÔ‚Å‚Ìxyzw )
+//dcl_2d		s0				// s0 2D texture
+
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+
+// R ‚ğ‘ã“ü
+mov				r0,			v0.r
+
+// G ‚É[“x( z / w )‚ğ‘ã“ü
+rcp				r0.w,		t0.w
+mul				r0.g,		t0.z,		r0.w
+
+mov				oC0,		r0								// o—Í
+

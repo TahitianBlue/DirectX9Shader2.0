@@ -1,0 +1,108 @@
+
+// depth shadow pixel shader pass 1
+
+//	D3DFMT_G16R16 shadow texture
+//		Green		depth
+//		Red			影濃度
+//	oC0 = ModelTex x Diffuse x ShadowCo( 前後01 x dif.a x 影濃度(R) )
+
+ps_2_0
+
+// 入力レジスタ
+dcl				v0				// v0 diffuse color
+dcl				t0				// t0 model texture uv
+dcl				t1				// t1 shadow texture xyzw
+dcl_2d		s0				// s0 model texture
+dcl_2d		s1				// s1 shadow texture ( point  sample )
+dcl_2d		s2				// s2 shadow texture ( linear sample )
+
+//	soft shadow sample offset
+//				c0		offset 0	Xofs / width,	Yofs / height,	-,			-
+//				:
+//				c7		offset 7	Xofs / width,	Yofs / height,	-,			-
+
+// 定数		c8		0.0f		1.0f		1 / 8,	-
+def				c8,		0.0f,		1.0f,		0.125f,	0.0f
+
+// 定数		c9		4.0f,		(4_8)co	(0_4)co	-
+def				c9,		4.0f,		0.875f,	0.125f,	0.0f
+
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+
+// diffuse x model texture
+
+texld			r0,			t0,			s0				// model tex sample
+mul				r1,			v0,			r0				// dif x tex
+
+// shadow texture
+
+rcp				r2.w,		t1.w							// 
+mul				r2,			t1,		r2.w				// tex xyz = xyz / w
+
+texld			r3,			r2,			s1							// shadow tex sample
+sub				r2.a,		r2.z,		r3.g						// r2.a = pixZ - texZ
+cmp				r2.a,		r2.a,		c8.y,		c8.x		// 前後により 前0 後1
+mul				r2.a,		r2.a,		v0.a						// 前後０１ x light.a (裏面除去)
+
+// soft shadow sample
+add				r4,			r2,			c0
+texld			r8,			r4,			s2							// shadow tex sample
+sub				r6.x,		r2.z,		r8.g						// pixZ - texZ
+
+// soft shadow sample
+add				r4,			r2,			c1
+texld			r9,			r4,			s2							// shadow tex sample
+sub				r6.y,		r2.z,		r9.g						// pixZ - texZ
+
+// soft shadow sample
+add				r4,			r2,			c2
+texld			r10,		r4,			s2							// shadow tex sample
+sub				r6.z,		r2.z,		r10.g						// pixZ - texZ
+
+// soft shadow sample
+add				r4,			r2,			c3
+texld			r11,		r4,			s2							// shadow tex sample
+sub				r6.w,		r2.z,		r11.g						// pixZ - texZ
+
+cmp				r7,			r6,			c8.y,		c8.x		// 前後 01
+
+// soft shadow sample
+add				r4,			r2,			c4
+texld			r8,			r4,			s2							// shadow tex sample
+sub				r6.x,		r2.z,		r8.g						// pixZ - texZ
+
+// soft shadow sample
+add				r4,			r2,			c5
+texld			r9,			r4,			s2							// shadow tex sample
+sub				r6.y,		r2.z,		r9.g						// pixZ - texZ
+
+// soft shadow sample
+add				r4,			r2,			c6
+texld			r10,		r4,			s2							// shadow tex sample
+sub				r6.z,		r2.z,		r10.g						// pixZ - texZ
+
+// soft shadow sample
+add				r4,			r2,			c7
+texld			r11,		r4,			s2							// shadow tex sample
+sub				r6.w,		r2.z,		r11.g						// pixZ - texZ
+
+cmp				r8,			r6,			c8.y,		c8.x		// 前後 01
+
+add				r6,			r7,			r8
+add				r7.x,		r6.x,		r6.y
+add				r7.x,		r7.x,		r6.z
+add				r7.x,		r7.x,		r6.w
+mul				r7.x,		r7.x,		c8.z			// / 8
+mul				r7.x,		r7.x,		r7.x			// ( 0_1 ) ^2
+mul				r2.a,		r2.a,		r7.x
+
+mul				r3.r,		r3.r,		r2.a			// shadow(R) x shadow co
+sub				r3.r,		c8.y,		r3.r			// 1.0f - shadow
+
+// diffuse x shadow
+mul				r4.rgb,	r1,			r3.r			// color RGB = dif x shadow
+mov				r4.a,		c8.x							// color A   = 0.0f
+
+mov				oC0,		r4								// 出力
+

@@ -1,0 +1,43 @@
+
+// ぼかしフィルタ 8 texture filter pixel shader
+
+//	8 texture * 4 sample = 32 texel filter
+
+ps_2_0
+
+dcl				t0			// tex 0
+dcl				t1			// tex 1
+dcl				t2			// tex 2
+dcl				t3			// tex 3
+dcl				t4			// tex 4
+dcl				t5			// tex 5
+dcl				t6			// tex 6
+dcl				t7			// tex 7
+dcl_2d		s0			// s0 2D texture
+
+// 定数		c0		光度倍率 / 8.0f.		-,			-,			-
+
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+
+texld			r0,			t0,			s0				// t 0 sample
+
+texld			r1,			t1,			s0				// t 1 sample
+add				r8,			r0,			r1
+texld			r2,			t2,			s0				// t 2 sample
+add				r8,			r8,			r2
+texld			r3,			t3,			s0				// t 3 sample
+add				r8,			r8,			r3
+texld			r4,			t4,			s0				// t 4 sample
+add				r8,			r8,			r4
+texld			r5,			t5,			s0				// t 5 sample
+add				r8,			r8,			r5
+texld			r6,			t6,			s0				// t 6 sample
+add				r8,			r8,			r6
+texld			r7,			t7,			s0				// t 7 sample
+add				r8,			r8,			r7
+
+mul				r9,			r8,			c0.xxxx		// tex total / 8
+
+mov				oC0,		r9								// 出力
+

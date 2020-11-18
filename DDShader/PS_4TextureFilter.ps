@@ -1,0 +1,48 @@
+
+// ぼかしフィルタ 4 texture filter pixel shader
+
+//	4 texture * 4 sample = 16 texel filter
+//	４つのテクスチャ座標からサンプルしてぼかす
+
+ps_2_0
+
+dcl				t0			// -X, -Y
+dcl				t1			// -X, +Y
+dcl				t2			// +X, -Y
+dcl				t3			// +X, +Y
+dcl_2d		s0			// s0 2D texture
+
+// 定数		c0		光度倍率 * 0.25f.		-,			-,			-
+
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+
+/*
+
+texld			r0,			t0,			s0				// t0 sample
+texld			r1,			t1,			s0				// t1 sample
+texld			r2,			t2,			s0				// t2 sample
+texld			r3,			t3,			s0				// t3 sample
+
+add				r4,			r0,			r1
+add				r4,			r4,			r2
+add				r4,			r4,			r3
+mul				r5,			r4,			c0.xxxx		// tex total / 4 * 光度倍率
+
+*/
+
+texld			r0,			t0,			s0				// t0 sample
+
+texld			r1,			t1,			s0				// t1 sample
+add				r4,			r0,			r1
+
+texld			r2,			t2,			s0				// t2 sample
+add				r4,			r4,			r2
+
+texld			r3,			t3,			s0				// t3 sample
+add				r4,			r4,			r3
+
+mul				r5,			r4,			c0.xxxx		// tex total / 4
+
+mov				oC0,		r5								// 出力
+

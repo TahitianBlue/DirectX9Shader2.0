@@ -1,0 +1,53 @@
+
+// depth shadow pixel shader pass 1
+
+//	D3DFMT_G16R16 shadow texture
+//		Green		depth
+//		Red			影濃度
+//	oC0 = ModelTex x Diffuse x ShadowCo( 前後01 x dif.a x 影濃度(R) )
+
+ps_2_0
+
+// 入力レジスタ
+dcl				v0				// v0 diffuse color
+dcl				t0				// t0 model texture uv
+dcl				t1				// t1 shadow texture xyzw
+dcl_2d		s0				// s0 model texture
+dcl_2d		s1				// s1 shadow texture
+
+// 定数		c0		0.0f		1.0f		-,			-
+def				c0,		0.0f,		1.0f,		0.0f,		0.0f
+
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+
+// diffuse x model texture
+
+texld			r0,			t0,			s0				// model tex sample
+mul				r1,			v0,			r0				// dif x tex
+
+// shadow texture
+
+rcp				r2.w,		t1.w							// 
+mul				r2.z,		t1.z,	r2.w				// z = z / w
+texldp		r3,			t1,			s1				// shadow tex sample (同次除算込み)
+
+/*
+rcp				r2.w,		t1.w							// 
+mul				r2,			t1,		r2.w				// tex xyz = xyz / w
+texld			r3,			r2,			s1				// shadow tex sample
+*/
+
+sub				r2.a,		r2.z,		r3.g						// r2.a = pixZ - texZ
+cmp				r2.a,		r2.a,		c0.y,		c0.x		// 前後により 前0 後1
+mul				r2.a,		r2.a,		v0.a						// 前後０１ x light.a (裏面除去)
+
+mul				r3.r,		r3.r,		r2.a			// shadow(R) x shadow co
+sub				r3.r,		c0.y,		r3.r			// 1.0f - shadow
+
+// diffuse x shadow
+mul				r4.rgb,	r1,			r3.r			// color RGB = dif x shadow
+mov				r4.a,		c0.x							// color A   = 0.0f
+
+mov				oC0,		r4								// 出力
+

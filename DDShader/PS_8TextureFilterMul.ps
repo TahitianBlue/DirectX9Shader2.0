@@ -1,0 +1,50 @@
+
+// ぼかしフィルタ 8 texture filter multiple pixel shader
+
+//	8 texture * 4 sample = 32 texel filter
+//	各ピクセルの倍率を指定できる　クロスフィルタ用
+
+ps_2_0
+
+dcl				t0			// tex 0
+dcl				t1			// tex 1
+dcl				t2			// tex 2
+dcl				t3			// tex 3
+dcl				t4			// tex 4
+dcl				t5			// tex 5
+dcl				t6			// tex 6
+dcl				t7			// tex 7
+dcl_2d		s0			// s0 2D texture
+
+// 定数		c0		t0co, 	t1co,	 t2co,	 t3co
+// 定数		c1		t4co, 	t5co,	 t6co,	 t7co
+
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+
+texld			r0,			t0,			s0					// t 0 sample
+mul				r8,			c0.x,		r0
+
+texld			r1,			t1,			s0					// t 1 sample
+mad				r8,			c0.y,		r1,		r8
+
+texld			r2,			t2,			s0					// t 1 sample
+mad				r8,			c0.z,		r2,		r8
+
+texld			r3,			t3,			s0					// t 1 sample
+mad				r8,			c0.w,		r3,		r8
+
+texld			r4,			t4,			s0					// t 1 sample
+mad				r8,			c1.x,		r4,		r8
+
+texld			r5,			t5,			s0					// t 1 sample
+mad				r8,			c1.y,		r5,		r8
+
+texld			r6,			t6,			s0					// t 1 sample
+mad				r8,			c1.z,		r6,		r8
+
+texld			r7,			t7,			s0					// t 1 sample
+mad				r8,			c1.w,		r7,		r8
+
+mov				oC0,		r8								// 出力
+

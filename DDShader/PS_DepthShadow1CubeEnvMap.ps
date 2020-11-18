@@ -1,0 +1,75 @@
+
+// depth shadow pixel shader pass 1
+
+//	reflect lighting
+//	depth shadow pass 1
+//	cube environment map
+
+//	D3DFMT_G16R16 shadow texture
+//		Green		depth
+//		Red			âeîZìx
+//	oC0 = ModelTex x Diffuse x ShadowCo( ëOå„01 x dif.a x âeîZìx(R) )
+
+ps_2_0
+
+// ì¸óÕÉåÉWÉXÉ^
+dcl				v0				// v0 diffuse color
+dcl				t0				// t0 model texture uv
+dcl				t1				// t1 shadow texture xyzw
+dcl				t2				// t2 reflect cube map xyz
+dcl_2d		s0				// s0 model texture
+dcl_2d		s1				// s1 shadow texture
+dcl_cube	s2				// s2 cube map texture
+
+// íËêî		c0 cube environment map parameter
+//	.x		RGB co					( src alpha )
+//	.y		1.0f - RGB co		( inv src alpha )
+//	.z		âº A multi / 3.0f ( A = (R+G+B) / 3 * A multi )
+//	.w		âº HDR to LDR coef
+
+// íËêî		c8		0.0f		1.0f		-,			-
+def				c8,		0.0f,		1.0f,		0.0f,		0.0f
+
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+
+// diffuse x model texture
+
+texld			r0,			t0,			s0				// model tex sample
+mul				r1,			v0,			r0				// dif x tex
+
+// shadow texture
+
+rcp				r2.w,		t1.w							// 
+mul				r2.z,		t1.z,	r2.w				// z = z / w
+
+texldp		r3,			t1,			s1				// shadow tex sample (ìØéüèúéZçûÇ›)
+
+sub				r2.a,		r2.z,		r3.g						// r2.a = pixZ - texZ
+cmp				r2.a,		r2.a,		c8.y,		c8.x		// ëOå„Ç…ÇÊÇË ëO0 å„1
+mul				r2.a,		r2.a,		v0.a						// ëOå„ÇOÇP x light.a (ó†ñ èúãé)
+
+mul				r3.r,		r3.r,		r2.a			// shadow(R) x shadow co
+sub				r3.r,		c8.y,		r3.r			// 1.0f - shadow
+
+// diffuse x shadow
+mul				r4.rgb,	r1,			r3.r			// color RGB = dif x shadow
+//mov			r4.a,		c8.x							// color A   = 0.0f
+
+// cube environment map texture
+
+texld			r0,			t2,			s2				// cube map tex sample
+
+mul_sat		r0,			r0,			c0.wwww		// HDR to LDR
+
+// RGB
+mul				r1.rgb,	c0.x,		r0					// envRGB * co
+mad				r4.rgb,	c0.y,		r4,			r1	// RGB = difRGB*(1-co) + envRGB*co
+
+// A
+add				r1.x,		r0.r,		r0.g
+add				r1.x,		r1.x,		r0.b			// A = R + G + B
+mul				r4.a,		r1.x,		c0.z			// A = (R+G+B) / 3 * A multi
+
+mov				oC0,		r4								// èoóÕ
+

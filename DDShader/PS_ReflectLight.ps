@@ -1,0 +1,18 @@
+
+// reflect light pixel shader
+
+//	oC0 = Diffuse x ModelTexColor
+
+ps_2_0
+
+dcl				v0				// v0 diffuse color
+dcl				t0				// t0 model texture uv
+dcl_2d		s0				// s0 2D texture
+
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+
+texld			r0,			t0,			s0				// model texture color sample
+mul				r1,			v0,			r0				// dif x tex
+mov				oC0,		r1								// èoóÕ
+
