@@ -1,6 +1,12 @@
 ## DirectX9 ピクセルシェーダ2.0テスト
 
-２００４年１月～２月制作。当時ＰＣでピクセルシェーダ2.0が利用できるようになり新しいグラフィック表現を実験していたもの。
+![疑似HDRフィルタ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/HDRCrossFilter.jpg)
+
+
+![ソフトシャドウ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/SelfShadowSoftEdge.jpg)
+
+
+２００４年１月～２月制作のプロジェクトを発掘。当時ＰＣでピクセルシェーダ2.0が利用できるようになり新しいグラフィック表現を実験していたもの。
 
 ゲームパッド操作によりカメラ位置、光源位置、ボールへの引力発生、シェーダ変更できます。
 
@@ -12,7 +18,7 @@ USBゲームパッドを接続していないと落ちてしまう場合があ�
 * ATi Radeon 9600
 
 ### 疑似HDRクロスフィルタ
-HDRCrossFilter.jpg
+![疑似HDRフィルタ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/HDRCrossFilter.jpg)
 強い光を放つ部分から放射状の光の線が拡散する表現
 
 * 整数カラー精度６０fpsでの描画
@@ -20,15 +26,16 @@ HDRCrossFilter.jpg
 * テクスチャマルチサンプリングを用いて引き伸ばし
 
 ### キューブ環境マップ
-HDRCrossFilter.jpg
-イメージベースドライティングのテスト
+イメージベースドライティングのテスト。（森の中だった気がする）
 
 ### セルフシャドウ
-SelfShadowSharpEdge.jpg
 
 * Zバッファシャドウマップによるセルフシャドウ
+![ソフトシャドウ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/SelfShadowSharpEdge.jpg)
 
-SelfShadowSoftEdge.jpg
+* ソフトシャドウ（エッジをぼかすマルチサンプリング追加）
+![ソフトシャドウ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/SelfShadowSoftEdge.jpg)
 
-* ソフトシャドウ（エッジをぼかすマルチサンプリング）
+### ステルスレンダラー
 
+透明表示。フレームバッファを参照してやや屈折した映像を表現。（画像なし）
