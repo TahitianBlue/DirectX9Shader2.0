@@ -2,9 +2,7 @@
 
 ![疑似HDRフィルタ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/HDRCrossFilter.jpg)
 
-
 ![ソフトシャドウ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/SelfShadowSoftEdge.jpg)
-
 
 ２００４年１月～２月制作のプロジェクトを発掘。当時ＰＣでピクセルシェーダ2.0が利用できるようになり新しいグラフィック表現を実験していたもの。
 
@@ -19,6 +17,7 @@ USBゲームパッドを接続していないと落ちてしまう場合があ�
 
 ### 疑似HDRクロスフィルタ
 ![疑似HDRフィルタ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/HDRCrossFilter.jpg)
+
 強い光を放つ部分から放射状の光の線が拡散する表現
 
 * 整数カラー精度６０fpsでの描画
@@ -30,10 +29,10 @@ USBゲームパッドを接続していないと落ちてしまう場合があ�
 
 ### セルフシャドウ
 
-* Zバッファシャドウマップによるセルフシャドウ
+Zバッファシャドウマップによるセルフシャドウ
 ![ソフトシャドウ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/SelfShadowSharpEdge.jpg)
 
-* ソフトシャドウ（エッジをぼかすマルチサンプリング追加）
+ソフトシャドウ（エッジをぼかすマルチサンプリング追加）
 ![ソフトシャドウ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/SelfShadowSoftEdge.jpg)
 
 ### ステルスレンダラー
