@@ -1,6 +1,6 @@
 ## DirectX9 ピクセルシェーダ2.0テスト
 
-[![動作YouTube](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/HDRCrossFilter.jpg)](https://youtu.be/M7Ybh4UoAC0)
+[![動作YouTube](http://img.youtube.com/vi/M7Ybh4UoAC0/0.jpg)](https://www.youtube.com/watch?v=M7Ybh4UoAC0)
 
 ![疑似HDRフィルタ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/HDRCrossFilter.jpg)
 
