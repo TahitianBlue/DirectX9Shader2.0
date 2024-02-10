@@ -1,6 +1,9 @@
 ## DirectX9 ピクセルシェーダ2.0テスト
+YouTube動画
 
 [![動作YouTube](http://img.youtube.com/vi/M7Ybh4UoAC0/0.jpg)](https://www.youtube.com/watch?v=M7Ybh4UoAC0)
+
+ScreenShot
 
 ![疑似HDRフィルタ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/HDRCrossFilter.jpg)
 
@@ -34,9 +37,11 @@ USBゲームパッドを接続していないと落ちてしまう場合があ�
 ### セルフシャドウ
 
 Zバッファシャドウマップによるセルフシャドウ
+
 ![ソフトシャドウ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/SelfShadowSharpEdge.jpg)
 
 ソフトシャドウ（エッジをぼかすマルチサンプリング追加）
+
 ![ソフトシャドウ](https://raw.githubusercontent.com/TahitianBlue/DirectX9Shader2.0/master/SelfShadowSoftEdge.jpg)
 
 ### ステルスレンダラー
